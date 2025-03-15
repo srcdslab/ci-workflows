@@ -39,7 +39,7 @@ jobs:
           cxx: ${{ matrix.cxx }}
           ambuild-ref: 'master'
           mm-ref: '1.12-dev'
-          sm-ref: '1.12-dev'
+          sm-ref: '5e3dc6c6c4610e1cb8869e98f43fa0e8f09a8b47'
           hl2sdk-manifests-ref: 'master'
           sdks: ${{ inputs.sdks }}
           configure-path: '../sm-ext-common/configure.py'
