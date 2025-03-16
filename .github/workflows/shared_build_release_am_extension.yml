@@ -7,6 +7,10 @@ on:
         description: "Space delimited list of SDKs to build against (e.g., css dods tf2)"
         required: true
         type: string
+      artifact-path:
+        description: "Artifact path to download from previous jobs"
+        default: ""
+        type: string
 
 jobs:
   build:
@@ -29,6 +33,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        if: inputs.artifact-path != ''
+        with:
+          path: ${{ inputs.artifact-path }}
 
       - name: Build extension
         uses: srcdslab/action-ambuild@v1
