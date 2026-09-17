@@ -52,8 +52,8 @@ jobs:
         id: ambuild
         with:
           os: ${{ matrix.os }}
-          cc: ${{ startsWith(matrix.os, 'windows') && 'msvc' || 'clang-14' }}
-          cxx: ${{ startsWith(matrix.os, 'windows') && 'msvc' || 'clang++-14' }}
+          cc: ${{ startsWith(matrix.os, 'windows') && 'msvc' || 'clang-20' }}
+          cxx: ${{ startsWith(matrix.os, 'windows') && 'msvc' || 'clang++-20' }}
           ambuild-ref: 'master'
           mm-ref: ${{ inputs.mm-branch }}
           sm-ref: ${{ matrix.sm-branch }}
