@@ -30,11 +30,14 @@ jobs:
       fail-fast: false
       matrix:
         os: ${{ fromJSON(inputs.os-list) }}
-        sm-branch:
-          - master
-          - 1.12-dev
+        sm:
+          - { ref: master, label: master }
+          - { ref: 1.12-dev, label: 1.12-dev }
+          # SourceMod 1.13.0.7427: extension API 9, what our servers run (master/1.12-dev
+          # builds report API 11/8 and don't load there).
+          - { ref: b68a60976cf7abaa6351f7b5bb83d98454f96413, label: 1.13-7427 }
 
-    name: ${{ matrix.os }} (SM ${{ matrix.sm-branch }})
+    name: ${{ matrix.os }} (SM ${{ matrix.sm.label }})
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
@@ -56,7 +59,7 @@ jobs:
           cxx: ${{ startsWith(matrix.os, 'windows') && 'msvc' || 'clang++-20' }}
           ambuild-ref: 'master'
           mm-ref: ${{ inputs.mm-branch }}
-          sm-ref: ${{ matrix.sm-branch }}
+          sm-ref: ${{ matrix.sm.ref }}
           hl2sdk-manifests-ref: 'master'
           sdks: ${{ inputs.sdks }}
           configure-path: '../sm-ext-common/configure.py'
@@ -65,7 +68,7 @@ jobs:
       - name: Upload package
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.os }}-sm-${{ matrix.sm-branch }}
+          name: ${{ matrix.os }}-sm-${{ matrix.sm.label }}
           path: ${{ steps.ambuild.outputs.package-path }}
           if-no-files-found: error
           retention-days: 14
